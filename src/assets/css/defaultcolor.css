@@ -1,0 +1,38 @@
+:root {
+  /* 主主题颜色 */
+  --main-theme-color: #ff9eb5;
+  --main-theme-color-hover: #ffacc0;
+  --main-theme-color-shade: #fccdd8;
+  /* 背景颜色 */
+  --main-bg-color: #fffefe;
+  --main-bg-color-shade: #f8e7e7;
+
+  --main-panel-bg-color: #ffffff;
+  --main-panel-bg-color-shade: #fffffff7;
+  --main-panel-box-shadow-white: rgba(232, 243, 255, 0.911);
+
+  /* 文字颜色 */
+  --main-text-color: #353333;
+  --main-text-color-shade: #818181;
+  --main-text-color-white: rgb(252, 239, 239);
+  --main-text-color-white-hover: rgb(255, 255, 255);
+
+  --main-box-shadow: 0 0 2px 0 rgba(21, 21, 21, 0.6);
+  --main-box-shadow-color: rgba(21, 21, 21, 0.6);
+  --main-box-shadow-light: 0 0 2px 0 rgba(234, 229, 229, 0.6);
+  --main-box-shadow-light-color: rgba(255, 248, 248, 0.6);
+
+  --big-box-shadow: 0 1px 5px 0 rgba(21, 21, 21, 0.6);
+  --big-box-shadow-light: 0 0 5px 0 rgba(255, 248, 248, 0.6);
+
+  --main-btn-bg-color: #ff9eb5;
+}
+
+a {
+  text-decoration: none;
+}
+
+@font-face {
+  font-family: "logofont";
+  src: url("../fonts/MoChaOuLei-2.ttf");
+}
