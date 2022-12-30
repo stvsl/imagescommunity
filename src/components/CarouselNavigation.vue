@@ -2,7 +2,7 @@
   <div class="carousel">
     <el-carousel :interval="4000" type="card" trigger="click"
       ><el-carousel-item v-for="item in images" :key="item"
-        ><router-link :to="'/art'"
+        ><router-link :to="'/art?id=' + item.artid"
           ><div class="item">
             <img :src="item.url" alt="无图片" />
             <div class="content">
@@ -24,26 +24,27 @@ export default {
       images: [
         {
           url: require("@/assets/imgs/1.png"),
-          artnames: "作品1",
-          artauthors: "作者1",
-          artintroductions: "介绍1",
-          artid: 1,
+          artnames: "崩坏三三周年",
+          artauthors: "stvsl",
+          artintroductions: "崩坏三三周年官方壁纸",
+          artid: 1000000003,
         },
 
         {
           url: require("@/assets/imgs/2.png"),
-          artnames: "作品2",
-          artauthors: "作者2",
-          artintroductions: "介绍2",
-          artid: 2,
+          artnames: "孤独摇滚",
+          artauthors: "stvsl",
+          artintroductions:
+            "孤独摇滚孤独摇滚孤独摇滚孤独摇滚孤独摇滚孤独摇滚孤独摇滚孤独摇滚孤独摇滚孤独摇滚",
+          artid: 1000000002,
         },
 
         {
           url: require("@/assets/imgs/3.png"),
-          artnames: "作品3",
-          artauthors: "作者3",
-          artintroductions: "介绍3",
-          artid: 3,
+          artnames: "崩坏三六周年",
+          artauthors: "stvsl2",
+          artintroductions: "崩坏三五周年官方壁纸",
+          artid: 1000000006,
         },
       ],
     };

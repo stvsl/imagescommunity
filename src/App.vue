@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <header>
     <div class="logo">
@@ -8,7 +9,12 @@
     </div>
     <div class="center">
       <div class="search">
-        <input type="text" placeholder="搜索所想" />
+        <input
+          id="searchbar"
+          type="text"
+          placeholder="搜索所想"
+          v-on:keyup.enter="searchit"
+        />
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
     </div>
@@ -17,14 +23,12 @@
         <el-avatar
           id="show-usericon"
           class="img"
-          @mouseover="showuseraccountpanel = true"
-          @mouseleave="hideuseraccountpanel"
           :size="60"
           :src="usericon"
+          @mouseover="showuseraccountpanel = true"
+          @mouseleave="hideuseraccountpanel"
         >
-          <img
-            src="https://cube.elemecdn.com/e/fd/0fc7d20532fdaf769a25683617711png.png"
-          />
+          <img :src="this.$store.state.userInfo.avatar" />
         </el-avatar>
         <div></div>
       </div>
@@ -55,6 +59,13 @@
   </header>
   <UserAccountPanel
     v-if="showuseraccountpanel || onuseraccountpanel"
+    :name="$store.state.userInfo.username"
+    :favorites="$store.state.userInfo.favorites"
+    :url="$store.state.userInfo.avatar"
+    :arts="$store.state.userInfo.arts"
+    :views="$store.state.userInfo.views"
+    :likes="$store.state.userInfo.likes"
+    :collections="$store.state.userInfo.collections"
     @mouseover="onuseraccountpanel = true"
     @mouseleave="
       () => {
@@ -62,17 +73,10 @@
         hideuseraccountpanel();
       }
     "
-    :name="this.$store.state.userInfo.username"
-    :url="this.$store.state.userInfo.avatar"
-    :favorites="this.$store.state.userInfo.favorites"
-    :arts="this.$store.state.userInfo.arts"
-    :views="this.$store.state.userInfo.views"
-    :likes="this.$store.state.userInfo.likes"
-    :collections="this.$store.state.userInfo.collections"
   />
 
   <!-- 空隙填充 -->
-  <div id="topemp"></div>
+  <div id="topemp" />
 
   <!-- 路由 -->
   <div>
@@ -80,7 +84,7 @@
   </div>
 
   <!-- 回到头部 -->
-  <div class="backtop" v-if="goTop" @click="backTop">
+  <div v-if="goTop" class="backtop" @click="backTop">
     <font-awesome-icon icon="fa-solid fa-arrow-up" />
   </div>
 
@@ -110,12 +114,27 @@ import UserAccountPanel from "./components/UserAccountPanel.vue";
 
 export default {
   name: "App",
+  created() {
+    // 从cookie尝试获取登录信息
+    if (this.$cookies.isKey("uuid")) {
+      // 继续获取username,avatar
+      this.$store.commit("login", {
+        uuid: this.$cookies.get("uuid"),
+        id: this.$cookies.get("id"),
+        username: this.$cookies.get("username"),
+        avatar: this.$cookies.get("avatar"),
+        sex: this.$cookies.get("sex"),
+        tel: this.$cookies.get("tel"),
+        arts: this.$cookies.get("arts"),
+      });
+    }
+  },
   data() {
     return {
       goTop: false,
       showuseraccountpanel: false,
       onuseraccountpanel: false,
-      usericon: "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+      usericon: this.$store.state.userInfo.avatar,
     };
   },
   methods: {
@@ -125,12 +144,19 @@ export default {
         behavior: "smooth",
       });
     },
-
     // 鼠标离开用户账户面板时，隐藏面板
     hideuseraccountpanel() {
       setTimeout(() => {
         this.showuseraccountpanel = false;
       }, 100);
+    },
+    searchit() {
+      this.$router.push({
+        path: "/search",
+        query: {
+          keyword: document.getElementById("searchbar").value,
+        },
+      });
     },
   },
   mounted() {
@@ -141,6 +167,10 @@ export default {
         this.goTop = false;
       }
     });
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    $route(to, from) {},
   },
   components: { UserAccountPanel },
 };

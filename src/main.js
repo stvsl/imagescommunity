@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import VueCookies from 'vue-cookies'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
@@ -21,4 +22,10 @@ import { faFlickr } from '@fortawesome/free-brands-svg-icons'
 library.add(faMagnifyingGlass, faArrowUpFromBracket, faStar, faImage, faUser, faListUl, faBars, faArrowUp)
 library.add(faFlickr, faEye, faHeart)
 
-createApp(App).use(store).use(router).use(ElementPlus).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
+createApp(App).
+    use(store)
+    .use(router)
+    .use(ElementPlus)
+    .use(VueCookies)
+    .component('font-awesome-icon', FontAwesomeIcon)
+    .mount('#app')

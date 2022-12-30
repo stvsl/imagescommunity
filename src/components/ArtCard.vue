@@ -1,12 +1,12 @@
 <template>
   <div class="artcard">
     <el-card :body-style="{ padding: '0px' }" shadow="hover">
-      <router-link :to="'/art'">
+      <router-link :to="'/art?id=' + artid">
         <el-image :src="arturl" class="image" loading="lazy" />
         <div class="bottom">
           <div style="margin-left: 10px">
             <div>{{ artname }}</div>
-            <div>{{ artauthor }}</div>
+            <div>{{ tartauthor }}</div>
           </div>
         </div>
       </router-link>
@@ -17,6 +17,9 @@
 <script>
 export default {
   name: "ArtCard",
+  created() {
+    this.getUserName(this.artauthor);
+  },
   props: {
     artid: {
       type: Number,
@@ -34,6 +37,28 @@ export default {
       type: String,
       default:
         "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+    },
+  },
+  data() {
+    return {
+      tartauthor: "作者",
+    };
+  },
+  methods: {
+    getUserName(artauthor) {
+      fetch("http://127.0.0.1:8521/api/user/getname", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uuid: artauthor,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.tartauthor = data.name;
+        });
     },
   },
 };
@@ -54,8 +79,12 @@ export default {
 }
 
 .image {
+  width: 200px;
+  height: 250px;
   object-fit: cover;
-  object-position: center;
-  display: block;
+}
+
+img {
+  object-fit: cover;
 }
 </style>

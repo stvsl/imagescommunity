@@ -11,10 +11,10 @@
         <div :style="{ display: 'flex' }">
           <el-col v-for="item in arts" :key="item" :span="3.5" style="flex-shrink: 0">
             <ArtCard
-              :artid="item.artid"
-              :artname="item.artname"
-              :artauthor="item.artauthor"
-              :arturl="item.arturl"
+              :artid="item.ImgId"
+              :artname="item.Name"
+              :artauthor="item.OwnerUuid"
+              :arturl="item.Uri"
             />
           </el-col>
         </div>
@@ -73,42 +73,6 @@ export default {
         },
         {
           artid: 6,
-          artname: "作品名称",
-          artauthor: "作者",
-          arturl: "https://picsum.photos/200/300",
-        },
-        {
-          artid: 7,
-          artname: "作品名称",
-          artauthor: "作者",
-          arturl: "https://picsum.photos/200/300",
-        },
-        {
-          artid: 8,
-          artname: "作品名称",
-          artauthor: "作者",
-          arturl: "https://picsum.photos/200/300",
-        },
-        {
-          artid: 9,
-          artname: "作品名称",
-          artauthor: "作者",
-          arturl: "https://picsum.photos/200/300",
-        },
-        {
-          artid: 10,
-          artname: "作品名称",
-          artauthor: "作者",
-          arturl: "https://picsum.photos/200/300",
-        },
-        {
-          artid: 11,
-          artname: "作品名称",
-          artauthor: "作者",
-          arturl: "https://picsum.photos/200/300",
-        },
-        {
-          artid: 12,
           artname: "作品名称",
           artauthor: "作者",
           arturl: "https://picsum.photos/200/300",

@@ -1,30 +1,30 @@
+<!-- eslint-disable vue/no-multiple-template-root -->
 <template>
   <section>
     <div class="imgdisplay">
       <header>
-        <h2>{{ name }}</h2>
+        <h2>{{ data.Name }}</h2>
         <h3>
-          发布时间： {{ release_time }}
+          发布时间： {{ data.ReleaseTime }}
           <span class="left"
-            ><font-awesome-icon icon="fa-solid fa-eye" />&nbsp; {{ views }} &nbsp;
-            <font-awesome-icon icon="fa-solid fa-heart" />&nbsp; {{ likes }} &nbsp;
-            <font-awesome-icon icon="fa-solid fa-star" />&nbsp; {{ collects }} &nbsp;
+            ><font-awesome-icon icon="fa-solid fa-eye" />&nbsp; {{ data.Views }} &nbsp;
+            <font-awesome-icon icon="fa-solid fa-heart" />&nbsp; {{ data.Likes }} &nbsp;
+            <font-awesome-icon icon="fa-solid fa-star" />&nbsp; {{ data.Collects }} &nbsp;
           </span>
         </h3>
       </header>
       <article>
         <el-image
-          style="width: 100%"
-          src="https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
+          :src="data.Uri"
           :zoom-rate="1.2"
-          :preview-src-list="urls"
+          :preview-src-list="[data.Uri]"
           :initial-index="4"
           fit="cover"
         />
         <div class="instroduce">
           <p>简介:</p>
           <span>
-            {{ describe }}
+            {{ data.Describe }}
             <br />
           </span>
           <div class="describetag">
@@ -32,13 +32,13 @@
               id="likebtn"
               color="var(--main-btn-bg-color)"
               :round="true"
-              onclick="alert('点赞成功！')"
+              :onclick="like"
               >点赞</el-button
             >
             <el-button
               id="collectbtn"
               color="var(--main-btn-bg-color)"
-              onclick="alert('收藏成功！')"
+              :onclick="favor"
               :round="true"
               >收藏</el-button
             >&nbsp;
@@ -47,10 +47,10 @@
         </div>
       </article>
     </div>
-    <aside><ArtestCard></ArtestCard></aside>
+    <aside><ArtestCard :uuid="data.OwnerUuid"></ArtestCard></aside>
   </section>
   <section style="margin-top: -60px">
-    <CommentsPanel></CommentsPanel>
+    <CommentsPanel :id="data.ImgId"></CommentsPanel>
   </section>
   <el-divider border-style="dotted" />
 </template>
@@ -58,68 +58,78 @@
 <script>
 import ArtestCard from "@/components/ArtestCard.vue";
 import CommentsPanel from "@/components/CommentsPanel.vue";
-const urls = ["https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"];
-const labels = ["标签1", "标签2", "标签3"];
 
 export default {
   name: "ArtView",
   components: { ArtestCard, CommentsPanel },
-
-  props: {
-    name: {
-      type: String,
-      default: "作品名称",
+  created() {
+    this.loade();
+  },
+  data() {
+    return {
+      data: null,
+      labels: ["标签1", "标签2", "标签3"],
+    };
+  },
+  methods: {
+    loade() {
+      fetch("http://127.0.0.1:8521/api/art/getArt?id=" + this.$route.query.id, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            // data转换
+            this.data = JSON.parse(data.arts);
+            this.labels = this.data.Label.split(",");
+          } else {
+            alert("获取作品信息失败");
+          }
+        });
     },
-
-    release_time: {
-      type: String,
-      default: "2022-12-17",
+    like() {
+      fetch("http://127.0.0.1:8521/api/art/like?id=" + this.$route.query.id, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            this.data.Likes++;
+            alert("点赞成功");
+          } else {
+            alert("获取作品信息失败");
+          }
+        });
     },
-
-    views: {
-      type: Number,
-      default: 0,
-    },
-
-    likes: {
-      type: Number,
-      default: 0,
-    },
-
-    collects: {
-      type: Number,
-      default: 0,
-    },
-
-    urls: {
-      type: Array,
-      default: urls,
-    },
-
-    describe: {
-      type: String,
-      default: "这是一幅画",
-    },
-    labels: {
-      type: Array,
-      default: labels,
+    favor() {
+      fetch("http://127.0.0.1:8521/api/collect/collectit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Imgid: this.data.ImgId,
+          Uuid: this.$store.state.userInfo.uuid,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            this.data.Collects++;
+            alert("收藏成功！");
+          } else {
+            alert("获取作品信息失败");
+          }
+        });
     },
   },
-
-  methods: {},
 };
-
-let load = () => {
-  // 向后端请求数据
-  //TODO
-  //   fetch("http://localhost:8080/api/artinfo=" + this.$route.params.id)
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //     });
-};
-
-load();
 </script>
 <style scoped>
 section {
@@ -175,10 +185,12 @@ span.left {
 
 article {
   border-radius: 10px;
+  width: 1400px;
   margin-top: 10px;
   margin-bottom: 10px;
   box-shadow: var(--main-box-shadow);
   text-align: left;
+  overflow: hidden;
 }
 
 .instroduce {

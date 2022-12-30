@@ -3,6 +3,7 @@
   --main-theme-color: #ff9eb5;
   --main-theme-color-hover: #ffacc0;
   --main-theme-color-shade: #fccdd8;
+  --main-theme-color-transparent: rgba(253, 209, 219, 0.1);
   /* 背景颜色 */
   --main-bg-color: #fffefe;
   --main-bg-color-shade: #f8e7e7;
@@ -17,6 +18,11 @@
   --main-text-color-white: rgb(252, 239, 239);
   --main-text-color-white-hover: rgb(255, 255, 255);
 
+  /* 文字阴影 */
+  --main-text-shadow: 0 0 4px rgba(122, 121, 121, 0.494);
+  --main-text-shadow-logo-big: 0 0 8px rgba(21, 21, 21, 0.4);
+
+  /* 边框颜色 */
   --main-box-shadow: 0 0 2px 0 rgba(21, 21, 21, 0.6);
   --main-box-shadow-color: rgba(21, 21, 21, 0.6);
   --main-box-shadow-light: 0 0 2px 0 rgba(234, 229, 229, 0.6);

@@ -4,7 +4,7 @@
       style="width: 90%; border-radius: 15px; box-shadow: var(--main-box-shadow-light)"
     >
       <div class="leavecomment">
-        <el-avatar :src="circleUrl" :size="70"></el-avatar>
+        <el-avatar :src="avatar" :size="70"></el-avatar>
         <el-input
           v-model="textarea"
           maxlength="200"
@@ -13,28 +13,30 @@
           type="textarea"
           :rows="3"
         />
-        <el-button color="var(--main-btn-bg-color)" size="large" style="height: 95%"
+        <el-button
+          color="var(--main-btn-bg-color)"
+          size="large"
+          style="height: 95%"
+          @click="sendComment"
           >发送</el-button
         >
       </div>
       <!-- 评论区 -->
-      <div class="comment" v-for="comment in 9" :key="comment.id">
+      <div class="comment" v-for="comment in comdata" :key="comment">
         <el-divider
           border-style="dotted"
-          style="margin: auto; width: 80%; margin-block: 5px"
+          style="margin: auto; width: 80%; margin-block: 8px"
         />
-        <el-col style="background-color: aqua">
+        <el-col>
           <el-row>
             <div>
-              <el-avatar :src="comment.avatar" :size="50"></el-avatar>
-              <div class="cname">11</div>
+              <el-avatar :src="comment.Avatar" :size="50"></el-avatar>
+              <div class="cname">{{ comment.Name }}</div>
             </div>
-            <div>
+            <div style="width: 80%; margin-top: auto; margin-bottom: auto">
               <el-col>
-                <div class="context">
-                  这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：这是一串评论，它很长，有200字：
-                </div>
-                <h5 class="time">1212</h5>
+                <div class="context">{{ comment.Comments }}</div>
+                <h5 class="time">{{ comment.Time }}</h5>
               </el-col>
             </div>
           </el-row>
@@ -48,9 +50,61 @@
 export default {
   name: "CommentsPanel",
   props: {
-    circleUrl: {
-      type: String,
-      default: "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
+    id: {
+      type: Number,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      textarea: "",
+      avatar: this.$store.state.userInfo.avatar,
+      comdata: [],
+    };
+  },
+  created() {
+    this.getcomment();
+  },
+  methods: {
+    sendComment() {
+      console.log(this.id);
+      fetch("http://127.0.0.1:8521/api/comment/upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Uuid: this.$store.state.userInfo.uuid,
+          Imgid: this.id,
+          Comments: this.textarea,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            this.$message({
+              message: "评论成功",
+              type: "success",
+            });
+          }
+        });
+    },
+    getcomment() {
+      fetch("http://127.0.0.1:8521/api/comment/get", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          Id: this.id,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            this.comdata = JSON.parse(data.comments);
+          }
+        });
     },
   },
 };
@@ -85,19 +139,28 @@ section {
 
 .cname {
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .context {
-  line-height: 40px;
-  font-size: 20px;
+  font-size: 16px;
   margin: auto;
+  margin-left: 20px;
+  text-align: left;
   color: var(--main-text-color);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .time {
   font-size: 15px;
   margin: auto;
+  margin-left: 20px;
+  margin-top: 5px;
+  text-align: left;
   color: var(--main-text-color-shade);
 }
 </style>

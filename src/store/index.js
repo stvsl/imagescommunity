@@ -1,5 +1,4 @@
 import { createStore } from "vuex";
-
 export default createStore({
   // 用户信息
   state: {
@@ -17,7 +16,7 @@ export default createStore({
       // 性别
       sex: "",
       // 电话
-      phone: "",
+      tel: "",
       // 作品数
       arts: 0,
       // 总收藏数
@@ -30,16 +29,25 @@ export default createStore({
       views: 0,
     },
   },
-  getters: {},
-  mutations: {},
-  actions: {
-    setCookie(state, data) {
-      state.userInfo.isLogin = true;
-      state.userInfo.username = data.username;
-      state.userInfo.avatar = data.avatar;
-      state.userInfo.id = data.id;
-      state.userInfo.uuid = data.uuid;
+  getters: {
+    // 获取用户信息
+    getUserInfo(state) {
+      return state.userInfo;
     },
   },
+  mutations: {
+    // 登录
+    login(state, data) {
+      state.userInfo.username = data["username"];
+      state.userInfo.isLogin = true;
+      state.userInfo.avatar = data["avatar"];
+      state.userInfo.id = data["id"];
+      state.userInfo.uuid = data["uuid"];
+      state.userInfo.sex = data["sex"];
+      state.userInfo.tel = data["tel"];
+      state.userInfo.arts = data["actnum"];
+    },
+  },
+  actions: {},
   modules: {},
 });

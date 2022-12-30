@@ -22,7 +22,7 @@
       <ul>
         <li>
           <p>
-            <router-link to="/user">
+            <router-link to="/me">
               <el-button type="danger">个人空间</el-button>
             </router-link>
           </p>
@@ -41,6 +41,12 @@
 <script>
 export default {
   name: "UserAccountPanel",
+  methods: {
+    logout() {
+      this.$cookies.remove("uuid");
+      this.$router.push("/login");
+    },
+  },
   props: {
     url: {
       type: String,
