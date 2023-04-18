@@ -16,7 +16,7 @@ import (
 
 // 调用lsky图床的接口
 func Upload(base64img string) string {
-	url := "http://192.168.1.1:9080/api/v1/upload"
+	url := "http://lsky.ssimp.stvsljl.com/api/v1/upload"
 	method := "POST"
 	filename := Base64ToJSFile(base64img)
 	payload := &bytes.Buffer{}
@@ -38,7 +38,7 @@ func Upload(base64img string) string {
 		fmt.Println(err)
 		return ""
 	}
-	req.Header.Add("Authorization", "Bearer 1|Y7M1ROhk5hu5HZOwb4FqPfLzwJW5s955WCjjvRxt")
+	req.Header.Add("Authorization", "Bearer 3|iv6zmPeJEp5HeQnpQwUuCuWiMQED5pqGD6FhI95y")
 	req.Header.Add("User-Agent", "Apifox/1.0.0 (https://www.apifox.cn)")
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 	res, err := client.Do(req)

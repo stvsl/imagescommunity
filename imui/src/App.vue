@@ -9,25 +9,14 @@
     </div>
     <div class="center">
       <div class="search">
-        <input
-          id="searchbar"
-          type="text"
-          placeholder="搜索所想"
-          v-on:keyup.enter="searchit"
-        />
+        <input id="searchbar" type="text" placeholder="搜索所想" v-on:keyup.enter="searchit" />
         <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
       </div>
     </div>
     <nav>
       <div>
-        <el-avatar
-          id="show-usericon"
-          class="img"
-          :size="60"
-          :src="usericon"
-          @mouseover="showuseraccountpanel = true"
-          @mouseleave="hideuseraccountpanel"
-        >
+        <el-avatar id="show-usericon" class="img" :size="60" :src="usericon" @mouseover="showuseraccountpanel = true"
+          @mouseleave="hideuseraccountpanel">
           <img :src="this.$store.state.userInfo.avatar" />
         </el-avatar>
         <div></div>
@@ -38,8 +27,7 @@
         </router-link>
       </div>
       <div>
-        <router-link to="/favorite"
-          ><font-awesome-icon icon="fa-solid fa-star" /><br />收藏
+        <router-link to="/favorite"><font-awesome-icon icon="fa-solid fa-star" /><br />收藏
         </router-link>
       </div>
       <div>
@@ -57,23 +45,15 @@
       </router-link>
     </nav>
   </header>
-  <UserAccountPanel
-    v-if="showuseraccountpanel || onuseraccountpanel"
-    :name="$store.state.userInfo.username"
-    :favorites="$store.state.userInfo.favorites"
-    :url="$store.state.userInfo.avatar"
-    :arts="$store.state.userInfo.arts"
-    :views="$store.state.userInfo.views"
-    :likes="$store.state.userInfo.likes"
-    :collections="$store.state.userInfo.collections"
-    @mouseover="onuseraccountpanel = true"
-    @mouseleave="
+  <UserAccountPanel v-if="showuseraccountpanel || onuseraccountpanel" :name="$store.state.userInfo.username"
+    :favorites="$store.state.userInfo.favorites" :url="$store.state.userInfo.avatar" :arts="$store.state.userInfo.arts"
+    :views="$store.state.userInfo.views" :likes="$store.state.userInfo.likes"
+    :collections="$store.state.userInfo.collections" @mouseover="onuseraccountpanel = true" @mouseleave="
       () => {
         onuseraccountpanel = false;
         hideuseraccountpanel();
       }
-    "
-  />
+    " />
 
   <!-- 空隙填充 -->
   <div id="topemp" />
@@ -91,17 +71,17 @@
   <!-- 页脚 -->
   <footer>
     <div class="footerbox">
-      <h1 style="font-family: logofont">图片社区课设项目</h1>
+      <h1 style="font-family: logofont">图片分享社区</h1>
     </div>
     <div class="footerbox">
-      <p>© 2022 图片社区课设项目</p>
+      <p>© 2023 图片社区项目</p>
       <p>地址：锦州市古塔区辽宁工业大学</p>
       <p>邮箱：aptx4869stvsl@outlook.com</p>
     </div>
     <div class="footerbox">
       <p>辽ICP备2022006009号-1</p>
       <p>版权所有: stvsl</p>
-      <p>电话：+86 17641544869</p>
+      <p>电话：+86 15204222302</p>
     </div>
     <div class="footerbox">
       <h1 style="font-family: logofont">stvsljl.com</h1>
@@ -170,7 +150,7 @@ export default {
   },
   watch: {
     // eslint-disable-next-line no-unused-vars
-    $route(to, from) {},
+    $route(to, from) { },
   },
   components: { UserAccountPanel },
 };
@@ -178,6 +158,7 @@ export default {
 
 <style>
 @import "./assets/css/defaultcolor.css";
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
